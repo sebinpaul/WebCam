@@ -63,7 +63,9 @@ captureBtnCont.addEventListener("click", (e) => {
 
   let tool = canvas.getContext("2d");
   tool.drawImage(video, 0, 0, canvas.width, canvas.height);
-
+  // Filtering
+  tool.fillStyle = transparentColor;
+  tool.fillRect(0, 0, canvas.width, canvas.height);
   let imageURL = canvas.toDataURL();
   let a = document.createElement("a");
   a.href = imageURL;
@@ -101,8 +103,21 @@ function startTimer() {
 
   timerID = setInterval(displayTimer, 1000);
 }
+
 function stopTimer() {
   clearInterval(timerID);
   timer.innerText = "00:00:00";
   timer.style.display = "none";
 }
+
+// Filtering logic
+let filterLayer = document.querySelector(".filter-layer");
+let allFilters = document.querySelectorAll(".filter");
+allFilters.forEach((filterElem) => {
+  filterElem.addEventListener("click", (e) => {
+    // Get style
+    transparentColor =
+      getComputedStyle(filterElem).getPropertyValue("background-color");
+    filterLayer.style.backgroundColor = transparentColor;
+  });
+});
